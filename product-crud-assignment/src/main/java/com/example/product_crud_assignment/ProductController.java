@@ -24,7 +24,6 @@
 
        // TODO: Implement the method to add a new product
        @PostMapping 
-       @RequestMapping("/createProduct")
        public Product createProduct(@RequestBody Product product) {
            // Add your code here to add the product to the list
            if (product.getId() == null || product.getId().isEmpty()) {
