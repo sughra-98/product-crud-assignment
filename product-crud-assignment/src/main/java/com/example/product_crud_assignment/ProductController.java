@@ -17,84 +17,33 @@ public class ProductController {
         this.productService = productService;
     }
 
-       // TODO: Implement the method to add a new product
-       @PostMapping 
-       @RequestMapping("/createProduct")
-       public Product createProduct(@RequestBody Product product) {
-           // Add your code here to add the product to the list
-           if (product.getId() == null || product.getId().isEmpty()) {
-               throw new IllegalArgumentException("Product ID cannot be null or empty");
-           }
-            if (getProductIndex(product.getId()) != -1) {
-                throw new IllegalArgumentException("Product with ID " + product.getId() + " already exists");
-            }
-            products.add(product);
+    // Create
+    @PostMapping
+    public Product createProduct(@RequestBody Product product) {
+        return productService.createProduct(product);
+    }
 
-           
-            return product; // Modify this line to return the added product
-       }
+    // Read all
+    @GetMapping
+    public List<Product> getAllProducts() {
+        return productService.getAllProducts();
+    }
 
-       // TODO: Implement the method to get all products
-       @GetMapping
-       
-       public List<Product> getAllProducts() {
-            
-           // Add your code here to return the list of products
+    // Read by ID
+    @GetMapping("/{id}")
+    public Product getProductById(@PathVariable String id) {
+        return productService.getProductById(id);
+    }
 
-              if (products.isEmpty()) {
-                throw new IllegalStateException("No products available");
-              }
-              
-           return products; // Replace null with the actual list
-       }
+    // Update
+    @PutMapping("/{id}")
+    public Product updateProduct(@PathVariable String id, @RequestBody Product updatedProduct) {
+        return productService.updateProduct(id, updatedProduct);
+    }
 
-       // TODO: Implement the method to get a product by ID
-       @GetMapping("/{id}")
-       public Product getProductById(@PathVariable String id) {
-           // Add your code here to find and return the product by ID
-              int index = getProductIndex(id);
-              if (index == -1) {
-                throw new IllegalArgumentException("Product with ID " + id + " not found");
-                }
-            
-            return products.get(index); // Replace null with the actual product
-       }
-
-       // TODO: Implement the method to update a product
-       @PutMapping("/{id}")
-       public Product updateProduct(@PathVariable String id, @RequestBody Product updatedProduct) {
-           // Add your code here to update the product by ID
-              int index = getProductIndex(id);
-                if (index == -1) {
-                    throw new IllegalArgumentException("Product with ID " + id + " not found");
-                }
-            if (updatedProduct.getId() == null || updatedProduct.getId().isEmpty()) {
-                throw new IllegalArgumentException("Product ID cannot be null or empty");
-            }
-            if (!updatedProduct.getId().equals(id)) {
-                throw new IllegalArgumentException("Product ID in the request body does not match the path variable");
-            }
-            products.set(index, updatedProduct);  
-
-            updatedProduct.setId(id); // Ensure the ID remains the same
-            // Return the updated product
-            if (getProductIndex(updatedProduct.getId()) != index) {
-                throw new IllegalArgumentException("Product with ID " + updatedProduct.getId() + " already exists");
-            }
-            updatedProduct.setId(id); // Ensure the ID remains the same
-            products.set(index, updatedProduct); // Update the product in the list
-            // Return the updated product
-            return updatedProduct; // Replace null with the updated product
-       }
-
-       // TODO: Implement the method to delete a product
-       @DeleteMapping("/{id}")
-       public void deleteProduct(@PathVariable String id) {
-           // Add your code here to remove the product by ID
-              int index = getProductIndex(id);
-                if (index == -1) {
-                    throw new IllegalArgumentException("Product with ID " + id + " not found");
-                }
-            products.remove(index); // Remove the product from the list
-       }
-   }
+    // Delete
+    @DeleteMapping("/{id}")
+    public void deleteProduct(@PathVariable String id) {
+        productService.deleteProduct(id);
+    }
+}
