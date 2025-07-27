@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.graphql.GraphQlProperties.Http;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,14 +22,18 @@ public class ProductController {
     }
 
     // Create
-    @PostMapping("")
+    @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
+
     public ResponseEntity<Product> createProduct(@RequestBody Product product) {
         Product createdProduct = productService.createProduct(product);
         return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
         }
 
     // Read all
-    @GetMapping("")
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+
     public ResponseEntity <List<Product>>  getAllProducts() {
        List<Product> products = productService.getAllProducts();
         return new ResponseEntity<>(products, HttpStatus.OK);
@@ -36,6 +41,9 @@ public class ProductController {
 
     // Read by ID
     @GetMapping("{id}")
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+
     public ResponseEntity<Product> getProductById(@PathVariable Long id) {
         try {
             Product product = productService.getProductById(id);
@@ -49,6 +57,7 @@ public class ProductController {
 
     // Update
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product updatedProduct) {
         try{
             Product updated_Product = productService.updateProduct(id, updatedProduct);
@@ -60,6 +69,7 @@ public class ProductController {
 
     // Delete
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         try{
             productService.deleteProduct(id);
