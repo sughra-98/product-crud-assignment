@@ -23,7 +23,7 @@ public class ProductController {
 
     // Create
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    // @PreAuthorize("hasRole('ADMIN')")
 
     public ResponseEntity<Product> createProduct(@RequestBody Product product) {
         Product createdProduct = productService.createProduct(product);
@@ -32,7 +32,7 @@ public class ProductController {
 
     // Read all
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    // @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 
     public ResponseEntity <List<Product>>  getAllProducts() {
        List<Product> products = productService.getAllProducts();
@@ -42,7 +42,7 @@ public class ProductController {
     // Read by ID
     @GetMapping("{id}")
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    // @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 
     public ResponseEntity<Product> getProductById(@PathVariable Long id) {
         try {
@@ -57,7 +57,7 @@ public class ProductController {
 
     // Update
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product updatedProduct) {
         try{
             Product updated_Product = productService.updateProduct(id, updatedProduct);
@@ -69,7 +69,7 @@ public class ProductController {
 
     // Delete
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         try{
             productService.deleteProduct(id);
